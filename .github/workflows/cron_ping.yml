@@ -13,5 +13,5 @@ jobs:
     steps:
       - name: Ping the webapp
         run: |
-          curl -X GET https://darija-back.onrender.com
+          curl --max-time 7 -X GET https://darija-back.onrender.com
         shell: bash
