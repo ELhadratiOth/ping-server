@@ -2,14 +2,24 @@ name: Keep Render Webapp Alive
 
 on:
   schedule:
-    - cron: '*/9 * * * *'  # Runs every 14 minutes
-  workflow_dispatch:  # Keep this for manual testing
+    - cron: '*/5 * * * *'  # Run every 5 minutes
+  repository_dispatch:
+    types: [keep_alive]
+  workflow_dispatch:  # Manual trigger for testing
 
 jobs:
   ping:
+    name: Ping Render Webapp
     runs-on: ubuntu-latest
-    timeout-minutes: 10  # Ensure the job doesn't overlap with the next scheduled run
     steps:
-      - name: Ping Webapp
+      - name: Curl request
         run: |
-          curl -sS -X GET https://darija-back.onrender.com || echo "Ping failed"
+          response=$(curl -s -w "\n%{http_code}" https://darija-app.onrender.com/docs)
+          http_code=$(echo "$response" | tail -n1)
+          content=$(echo "$response" | sed '$d')
+          echo "HTTP Status Code: $http_code"
+          echo "Response: $content"
+          if [ "$http_code" -ne 200 ]; then
+            echo "Failed to ping webapp"
+            exit 1
+          fi
