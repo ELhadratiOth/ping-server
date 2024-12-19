@@ -2,18 +2,14 @@ name: Keep Render Webapp Alive
 
 on:
   schedule:
-    - cron: '*/1 * * * *'  # Runs every 14 minutes
-  workflow_dispatch:  # Allows manual triggering
+    - cron: '*/9 * * * *'  # Runs every 14 minutes
+  workflow_dispatch:  # Keep this for manual testing
 
 jobs:
   ping:
     runs-on: ubuntu-latest
+    timeout-minutes: 10  # Ensure the job doesn't overlap with the next scheduled run
     steps:
-      - name: Send HTTP GET Request and Wait
+      - name: Ping Webapp
         run: |
-          while true; do
-            curl -X GET https://darija-back.onrender.com
-            echo "Sleeping for 14 minutes..."
-            sleep 840  # 14 minutes in seconds
-          done
-        continue-on-error: true  # Continue even if the request fails
+          curl -sS -X GET https://darija-back.onrender.com || echo "Ping failed"
