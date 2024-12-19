@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Curl request
         run: |
-          response=$(curl -s -w "\n%{http_code}" https://darija-app.onrender.com/docs)
+          response=$(curl -s -w "\n%{http_code}" https://darija-back.onrender.com/)
           http_code=$(echo "$response" | tail -n1)
           content=$(echo "$response" | sed '$d')
           echo "HTTP Status Code: $http_code"
