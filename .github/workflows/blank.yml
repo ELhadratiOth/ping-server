@@ -12,7 +12,7 @@ jobs:
       - name: Send HTTP GET Request and Wait
         run: |
           while true; do
-            curl -X GET https://darija-app.onrender.com/docs
+            curl -X GET https://darija-back.onrender.com
             echo "Sleeping for 14 minutes..."
             sleep 840  # 14 minutes in seconds
           done
