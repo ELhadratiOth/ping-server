@@ -2,24 +2,16 @@ name: Keep Render Webapp Alive
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # Run every 5 minutes
-  repository_dispatch:
-    types: [keep_alive]
-  workflow_dispatch:  # Manual trigger for testing
+    - cron: '*/5 * * * *'
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
 
 jobs:
   ping:
-    name: Ping Render Webapp
     runs-on: ubuntu-latest
     steps:
-      - name: Curl request
+      - name: Ping the webapp
         run: |
-          response=$(curl -s -w "\n%{http_code}" https://darija-back.onrender.com/)
-          http_code=$(echo "$response" | tail -n1)
-          content=$(echo "$response" | sed '$d')
-          echo "HTTP Status Code: $http_code"
-          echo "Response: $content"
-          if [ "$http_code" -ne 200 ]; then
-            echo "Failed to ping webapp"
-            exit 1
-          fi
+          curl -X GET https://darija-back.onrender.com
+        shell: bash
