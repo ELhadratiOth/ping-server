@@ -1,0 +1,15 @@
+name: Keep Render Webapp Alive
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Runs every 10 minutes
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send HTTP GET Request
+        run: |
+          curl -X GET https://darija-app.onrender.com/docs
+        continue-on-error: true  # Continue even if the request fails
