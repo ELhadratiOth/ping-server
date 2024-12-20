@@ -2,7 +2,7 @@ name: Keep Render Webapp Alive
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/1 * * * *'
   push:
     branches: [ "master" ]
   workflow_dispatch:
@@ -13,5 +13,5 @@ jobs:
     steps:
       - name: Ping the webapp
         run: |
-          curl --max-time 7 -X GET https://darija-back.onrender.com
+          curl --max-time 5 -X GET https://darija-back.onrender.com
         shell: bash
